@@ -1,7 +1,9 @@
 import java.util.Arrays;
+import java.util.Comparator;
 
 public class Btree {
 	final int order = 7;
+	int minKeys = order/2;
 	Node root;
 	
 	public Btree() {
@@ -14,8 +16,7 @@ public class Btree {
 				z.add(key);
 			else {
 				z.add(key);
-				z.split();
-				root = z.parent;
+				split(z);
 			}
 		}
 		else {
@@ -40,7 +41,27 @@ public class Btree {
 		
 	}
 
-	
+	public void split(Node z) {
+		if (!z.hasParent()) {
+			z.parent = new Node(order);
+			root = z.parent;
+			root.add(z.key[minKeys]);
+			z.key[minKeys] = null;
+			root.child[0] = z;
+			Node child2 = new Node(order);
+			for (int i = minKeys + 1; i < order; i++) {
+				child2.add(z.key[i]);
+				z.key[i] = null;
+			}
+			root.child[1] = child2;
+		}
+		
+		else {
+			z.parent.add(z.key[minKeys]);
+			Node newChild = new Node(order);
+			
+		}
+	}
 
 	
 	class Node {
@@ -69,7 +90,20 @@ public class Btree {
 		public void add(int y) {
 			key[pointer] = y;
 			pointer++;
-			Arrays.sort(key);
+			Arrays.sort(key, new Comparator<Integer>() {
+				 public int compare(Integer i, Integer j) {
+					 if (i == null && j == null) {
+						 return 0;
+						 }
+					 if (i == null) {
+						 return 1;
+						 }
+					 if (j == null) {
+						 return -1;
+						 }
+					 return i.compareTo(j);
+					 }
+				 });
 		}
 		
 		public boolean hasChild() {
@@ -79,17 +113,13 @@ public class Btree {
 				return false;
 		}
 		
-		public void split() {
-			pointer = 0;
-			parent = new Node(numChild);
-			parent.child[1] = new Node(numChild);
-			parent.add(key[minKeys+1]);
-			key[minKeys+1] = null;
-			for (int i = minKeys+1; i <= numKeys; i++) {
-				parent.child[1].add(key[i]);
-				key[i] = null;
-			}
+		public boolean hasParent() {
+			if (parent == null) 
+				return false;
+			else
+				return true;
 		}
 		
+		 
 	}
 }
