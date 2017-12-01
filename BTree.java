@@ -74,8 +74,8 @@ public class Btree {
 		int numChild;
 		int numKeys;
 		int minKeys;
-		Integer[] key = new Integer[numKeys+1];
-		Node[] child = new Node[numChild+1];
+		Integer[] key;
+		Node[] child;
 		Node parent;
 		
 		public Node(int x) {
@@ -84,6 +84,8 @@ public class Btree {
 			keyPointer = 0;
 			childPointer = 2;
 			minKeys = numKeys/2;
+			key = new Integer[numKeys+1];
+			child = new Node[numChild+1];
 		}
 		
 		public boolean isFull() {
@@ -114,9 +116,9 @@ public class Btree {
 		
 		public boolean hasChild() {
 			if (child[0] == null) 
-				return true;
-			else 
 				return false;
+			else 
+				return true;
 		}
 		
 		public boolean hasParent() {
