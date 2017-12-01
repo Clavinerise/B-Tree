@@ -33,22 +33,7 @@ public class Btree {
 		}
 	}
 	
-	public void update() {
-		
-	}
-	
-	public void select() {
-		
-	}
-
 	public void split(Node z) {
-		// conditions needed to be satisfied
-		// 1 root node initial splits (done)
-		// 2 child of root node splits (done)
-		// push node up if child is middle node and adjust (done)
-		// 3 root node with child splits due to child and root node full (done)
-		// 4 parent of child splits due to child and parent full
-		// be able to adjust all parent child relationship
 		if (!z.hasParent()) {
 			z.parent = new Node(order);
 			root = z.parent;
