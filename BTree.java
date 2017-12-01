@@ -2,7 +2,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 public class Btree {
-	final int order = 5;
+	final int order = 7;
 	int minKeys = order/2;
 	Node root;
 	
