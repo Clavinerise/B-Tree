@@ -46,7 +46,7 @@ public class Btree {
 		// 1 root node initial splits (done)
 		// 2 child of root node splits (done)
 		// push node up if child is middle node and adjust (done)
-		// 3 root node with child splits due to child and root node full
+		// 3 root node with child splits due to child and root node full (done)
 		// 4 parent of child splits due to child and parent full
 		// be able to adjust all parent child relationship
 		if (!z.hasParent()) {
@@ -64,18 +64,20 @@ public class Btree {
 		}
 		
 		else {
-			if(!z.parent.isFull()) {
-				z.parent.add(z.key[minKeys]);
-				z.key[minKeys] = null;
-				Node newChild = new Node(order);
-				for (int i = minKeys + 1; i < order; i++) {
-					newChild.add(z.key[i]);
-					z.key[i] = null;
-				}
-				z.parent.addChild(newChild);
+			z.parent.add(z.key[minKeys]);
+			z.key[minKeys] = null;
+			Node newChild = new Node(order);
+			for (int i = minKeys + 1; i < order; i++) {
+				newChild.add(z.key[i]);
+				z.key[i] = null;
 			}
-			else {
-				
+			z.parent.addChild(newChild);
+			if (z.parent.isFull()) {
+				split(z.parent);
+				for (int i = minKeys+1; i < order; i++) {
+					z.parent.child[2].addChild(z.child[i]);
+					z.child[i] = null;
+				}
 			}
 		}
 	}
@@ -87,8 +89,8 @@ public class Btree {
 		int numChild;
 		int numKeys;
 		int minKeys;
-		Integer[] key = new Integer[numKeys + 1];
-		Node[] child = new Node[numChild];
+		Integer[] key = new Integer[numKeys+1];
+		Node[] child = new Node[numChild+1];
 		Node parent;
 		
 		public Node(int x) {
