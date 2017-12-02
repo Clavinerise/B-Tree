@@ -57,11 +57,11 @@ public class Btree {
 			if (z.parent.isFull()) {
 				Node parent = z.parent;
 				split(parent);
-				for (int i = minKeys+1; i < order; i++) {
+				for (int i = minKeys+1; i < order+1; i++) {
 					parent.parent.child[1].addChild(parent.child[i]);
 					parent.child[i] = null;
 				}
-				for (int i = 0; i < minKeys+1; i++) {
+				for (int i = 0; i < minKeys; i++) {
 					parent.parent.child[1].child[i].parent = parent.parent.child[1];
 				}
 			}
@@ -83,7 +83,7 @@ public class Btree {
 			numChild = x;
 			numKeys = x-1;
 			keyPointer = 0;
-			childPointer = 2;
+			childPointer = 1;
 			minKeys = numKeys/2;
 			key = new Integer[numKeys+1];
 			child = new Node[numChild+1];
