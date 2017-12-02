@@ -28,7 +28,7 @@ public class BTRecords {
         }
     }
     
-    public void findNodeRecord(int i) throws IOException {
+    public void findNodeRecord(long i) throws IOException {
         //seek the B-Tree node record whose ID is i
         file.seek(16 + i*8*entries);
     }
