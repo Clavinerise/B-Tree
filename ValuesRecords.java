@@ -40,7 +40,7 @@ public class ValuesRecords {
         countRecords++;
     }
 
-    public void readValue() throws IOException {
+    public String readValue() throws IOException {
         // get actual size of the string to read
         short len = file.readShort();
         // allocate a byte array with length = size of string
@@ -48,6 +48,7 @@ public class ValuesRecords {
         // read byte array
         file.read(bArr);
         // use string contructor and specify charset name to utf8
-        file.writeUTF(new String(bArr, "UTF-8"));
+        String message = new String(bArr, "UTF-8")
+        return message;
     }
 }
