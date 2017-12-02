@@ -7,7 +7,7 @@ public class BTree {
 	Node root;
 	
 	public BTree() {
-		root = new Node(order);
+            root = new Node(order);
 	}
 	
 	public void insert(Node z, int key) {
