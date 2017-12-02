@@ -46,6 +46,8 @@ public class btdb {
                 if(search(key) <= 0){
                     System.out.printf("ERROR: %d does not exist.", key);
                 } else {
+                    // find key offset in bt file
+                    
                     //update record in val file
                     valFile.access();
                     valFile.write(value);
@@ -57,7 +59,9 @@ public class btdb {
                 if(search(key) <= 0){
                     System.out.printf("ERROR: %d does not exist.", key);
                 } else {
-                    //get record value
+                    //get record number
+                    
+                    //get key value
                     String value = btfile.readKeyValue( , valfile);
                     // print confirmation
                     System.out.printf("%d => %s", key, value);
