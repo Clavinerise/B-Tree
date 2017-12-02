@@ -30,9 +30,9 @@ public class ValuesRecords {
     
     // write str into the file
     public void write(String str) throws IOException {
-        short len = str.length();
         // convert string to byte
         byte[] bArr = str.getBytes("UTF8");
+        short len = bArr.size();
         // write the length of the byte array from the convert
         file.writeShort(len);
         // write the byte array
