@@ -16,7 +16,7 @@ public class btdb {
         // creates/reads value file
         //ValuesRecords valFile = new ValuesRecords(val);
         
-        System.out.println("> ");
+        System.out.print("> ");
         while(in.hasNextLine()) {
             // reads instruction
             String instruct = in.next();
