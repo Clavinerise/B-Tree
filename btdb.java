@@ -27,7 +27,7 @@ public class btdb {
                 if(search(key) >= 0){
                     System.out.printf("< ERROR: %d already exists.");
                 } else {
-                    // adds to bt file
+                    // adds to btfile
                     btFile.addKey(key, value);
                     // print confirmation
                     System.out.println("< %d inserted.", key);
@@ -40,7 +40,7 @@ public class btdb {
                 if(search(key) <= 0){
                     System.out.printf("< ERROR: %d does not exist.", key);
                 } else {
-                    //update record in val file
+                    //update record in valfile through btfile
                     btFile.updateRecords(key, value);
                     // print confirmation
                     System.out.println("< %d updated.", key);
