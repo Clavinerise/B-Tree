@@ -32,7 +32,7 @@ public class ValuesRecords {
     public void write(String str) throws IOException {
         // convert string to byte
         byte[] bArr = str.getBytes("UTF8");
-        short len = bArr.size();
+        short len = (short) bArr.length;
         // write the length of the byte array from the convert
         valfile.writeShort(len);
         // write the byte array
@@ -50,7 +50,7 @@ public class ValuesRecords {
         // read byte array
         valfile.read(bArr);
         // use string contructor and specify charset name to utf8
-        String message = new String(bArr, "UTF-8")
+        String message = new String(bArr, "UTF-8");
         return message;
     }
 }
