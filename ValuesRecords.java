@@ -7,7 +7,7 @@ public class ValuesRecords {
     long countRecords;
     int RECORD_COUNT_OFFSET = 0;
     int valSize = 258;
-
+    
     public ValuesRecords(String strFile) throws IOException {
         File file = new File(strFile);
 
@@ -23,11 +23,12 @@ public class ValuesRecords {
         }
     }
     
-
+    // go to the i-th value
     public void access(long i) throws IOException {
         this.file.seek(8 + i * valSize);
     }
-
+    
+    // write str into the file
     public void write(String str) throws IOException {
         short len = str.length();
         // convert string to byte
@@ -40,6 +41,7 @@ public class ValuesRecords {
         countRecords++;
     }
 
+    // returns the string value
     public String readValue() throws IOException {
         // get actual size of the string to read
         short len = file.readShort();
