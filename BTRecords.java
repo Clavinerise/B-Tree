@@ -11,9 +11,9 @@ public class BTRecords {
     int order = 7;
     int entries = 2+3*(order-1);
     
-    public BTRecords(String btreeFile, String valFile) throws IOException {
-        ValuesRecords valFile = new ValuesRecords(valFile);
-        File btFile = new File(btreeFile);
+    public BTRecords(String btreeFile, String valfile) throws IOException {
+        valFile = new ValuesRecords(valfile);
+        File file = new File(btreeFile);
 
         if (!file.exists()) {
             this.countRecords = 0;
@@ -31,7 +31,7 @@ public class BTRecords {
     }
     
     // INSERT instruction
-    public void addKey(long key, String value) {
+    public void addKey(long key, String value) throws IOException {
         // BTree add
         
         // valFile add
@@ -40,7 +40,7 @@ public class BTRecords {
     }
     
     // UPDATE instruction
-    public void updateRecords(long key, String value) {
+    public void updateRecords(long key, String value) throws IOException {
         // get offset key from btFile
         
         // valFile update
@@ -49,7 +49,7 @@ public class BTRecords {
     }
     
     // SELECT instruction
-    public String readKeyValue(long key, long record, long numKey, RandomAccessFile valFile) throws IOException {
+    public String readKeyValue(long key, long record, long numKey) throws IOException {
         // go to value offset record
         btfile.seek((16 + (record * 8 * entries)) + (24 + (8 * 3 * numKey)));
         // get value offset
@@ -85,18 +85,18 @@ public class BTRecords {
         return key;
     }
     
-    public boolean hasChild(long node) {
+    public boolean hasChild(long node) throws IOException{
         btfile.seek((16 + (node * 8 * entries)) + 8);
-        if (readLong() == -1) {
+        if (btfile.readLong() == -1) {
             return false;
         } else {
             return true;
         }
     }
     
-    public boolean hasParent(long node) {
+    public boolean hasParent(long node) throws IOException{
         btfile.seek((16 + (node * 8 * entries)));
-        if (readLong() == -1) {
+        if (btfile.readLong() == -1) {
             return false;
         } else {
             return true;
@@ -104,7 +104,7 @@ public class BTRecords {
     }
     
     // checks if node is full
-    public boolean isFull(long node) {
+    public boolean isFull(long node) throws IOException{
         if (readChildID(node, 4) == -1) {
             return false;
         } else {
@@ -121,7 +121,7 @@ public class BTRecords {
     // searches for a key
     // should return the node record # (?)
     // or maybe return boolean
-    public long search(long record, long key){
+    public long search(long record, long key) throws IOException{
         
     }
 }
