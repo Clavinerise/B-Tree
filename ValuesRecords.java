@@ -24,7 +24,7 @@ public class ValuesRecords {
     }
     
 
-    public void access(int i) throws IOException {
+    public void access(long i) throws IOException {
         this.file.seek(8 + i * valSize);
     }
 
