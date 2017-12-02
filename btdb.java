@@ -63,7 +63,7 @@ public class btdb {
             } else {
                 System.out.println("< ERROR: invalid command.");
             }
-            System.out.println("> ");
+            System.out.print("> ");
         }
     }
 }
