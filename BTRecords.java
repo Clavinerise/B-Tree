@@ -34,15 +34,40 @@ public class BTRecords {
     }
     
     public void goToRoot() throws IOException {
-        long rootRec = file.readLong(file.seek(8));
-        findNodeRecord(rootRec);
+        findNodeRecord(rootLocation);
     }
     
     public long read() throws IOException {
         return file.readLong();
     }
     
+    public long readChildID(long record, int numChild) throws IOException {
+        file.seek((16 + (record * 8 * entries)) + (8 + (8 * 3 * numChild)));
+        return file.readLong();
+    }
+    
+    public long readKey(long record, int numKey) throws IOException {
+        file.seek((16 + (record * 8 * entries)) + (16 + (8 * 3 * numKey)));
+        long key = file.readLong();
+        return key;
+    }
+    
+    public String readKeyValue(long record, RandomAccessFile valFile) throws IOException {
+        // go to value offset record
+        file.seek((16 + (record * 8 * entries)) + (24 + (8 * 3 * numKey)));
+        // get value offset
+        long offset = file.readLong();
+        valFile.access(offset);
+        String value = valFile.readValue();
+        return value;
+    }
+                  
     public void write(long in) throws IOException {
         file.writeLong(in);
+    }
+    
+    // returns the record #
+    public long search(long record, long key){
+        
     }
 }
