@@ -45,7 +45,7 @@ public class BTRecords {
         return file.readLong();
     }
     
-    // returns the record's numChild's ID
+    // returns the record's numChild ID
     // record -> node record, numChild -> ith child
     public long readChildID(long record, int numChild) throws IOException {
         file.seek((16 + (record * 8 * entries)) + (8 + (8 * 3 * numChild)));
@@ -60,8 +60,36 @@ public class BTRecords {
         return key;
     }
     
+    public boolean hasChild(long node) {
+        file.seek((16 + (node * 8 * entries)) + 8);
+        if (readLong() == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    
+    public boolean hasParent(long node) {
+        file.seek((16 + (node * 8 * entries)));
+        if (readLong() == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    
+    // checks if node is full
+    public boolean isFull(long node) {
+        if (readChildID(node, 4) == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    
     // returns the value of the numKey of record
-    public String readKeyValue(long record, long numKey, RandomAccessFile valFile) throws IOException {
+    // modify this to return 
+    public String readKeyValue(long key, long record, long numKey, RandomAccessFile valFile) throws IOException {
         // go to value offset record
         file.seek((16 + (record * 8 * entries)) + (24 + (8 * 3 * numKey)));
         // get value offset
@@ -72,12 +100,14 @@ public class BTRecords {
     }
     
     // writes a key into the file
+    // should be modified to work for Btree
     public void write(long in) throws IOException {
         file.writeLong(in);
     }
     
     // searches for a key
     // should return the node record # (?)
+    // or maybe return boolean
     public long search(long record, long key){
         
     }
