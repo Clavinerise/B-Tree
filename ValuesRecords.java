@@ -29,25 +29,25 @@ public class ValuesRecords {
     }
 
     public void write(String str) throws IOException {
-        int len = str.length();
-        //convert string to byte
+        short len = str.length();
+        // convert string to byte
         byte[] bArr = str.getBytes("UTF8");
-        //write the length of the byte array from the convert
+        // write the length of the byte array from the convert
         file.writeShort(len);
-        //write the byte array
+        // write the byte array
         file.write(bArr);
-        //update header to reflect the count of stored records
+        // update header to reflect the count of stored records
         countRecords++;
     }
 
     public void readValue() throws IOException {
-        //get actual size of the string to read
+        // get actual size of the string to read
         short len = file.readShort();
-        //allocate a byte array with length = size of string
+        // allocate a byte array with length = size of string
         byte[] bArr = new byte[len];
-        //read byte array
+        // read byte array
         file.read(bArr);
-        //use string contructor and specify charset name to utf8
+        // use string contructor and specify charset name to utf8
         file.writeUTF(new String(bArr, "UTF-8"));
     }
 }
