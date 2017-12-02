@@ -6,7 +6,7 @@ public class ValuesRecords {
     RandomAccessFile file;
     long countRecords;
     int RECORD_COUNT_OFFSET = 0;
-    int valSize = 256;
+    int valSize = 258;
 
     public ValuesRecords(String strFile) throws IOException {
         File file = new File(strFile);
