@@ -25,43 +25,42 @@ public class btdb {
             if(instruct.equals("insert")) {
                 // reads input key and value
                 long key = in.nextLong();
-                String message = in.nextLine();
+                String value = in.nextLine();
                 // checks if key already exists
-                if(search(key)){
+                if(search(key) >= 0){
                     System.out.printf("ERROR: %d already exists.");
                 } else {
                     // adds to bt file
                     
                     // adds to val File
                     valFile.access(valFile.countRecords);
-                    valFile.write(message);
+                    valFile.write(value);
                     // print confirmation
                     System.out.println(key + " inserted.", key);
                 }
             } else if (instruct.equals("update")) {
                 // reads key and value
-                int key = in.nextInt();
-                String message = in.nextLine();
+                long key = in.nextLong();
+                String value = in.nextLine();
                 // checks if key already exists
-                if(!search(key)){
+                if(search(key) <= 0){
                     System.out.printf("ERROR: %d does not exist.", key);
                 } else {
                     //update record in val file
                     valFile.access();
-                    valFile.write(message);
+                    valFile.write(value);
                     // print confirmation
                     System.out.println(key + " updated.");
                 }
             } else if (instruct.equals("select")) {
-                int key = in.nextInt();
-                if(!search(key)){
+                long key = in.nextLong();
+                if(search(key) <= 0){
                     System.out.printf("ERROR: %d does not exist.", key);
                 } else {
                     //get record value
-                    valFile.access();
-                    valFile.readValue();
+                    String value = btfile.readKeyValue( , valfile);
                     // print confirmation
-                    System.out.printf("%d => %s", key, message);
+                    System.out.printf("%d => %s", key, value);
                 }
             } else if (instruct.equals("exit")) {
                 System.exit(0);
@@ -69,9 +68,5 @@ public class btdb {
                 System.out.println("ERROR: invalid command.");
             }
         }
-    }
-    
-    public boolean search(int key){
-        
     }
 }
