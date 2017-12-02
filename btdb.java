@@ -17,9 +17,10 @@ public class btdb {
         //ValuesRecords valFile = new ValuesRecords(val);
         
         while(in.hasNextLine()) {
+            System.out.println("> ");
             // reads instruction
             String instruct = in.next();
-            if(instruct.equals("> insert")) {
+            if(instruct.equals("insert")) {
                 // reads input key and value
                 long key = in.nextLong();
                 String value = in.nextLine();
@@ -32,7 +33,7 @@ public class btdb {
                     // print confirmation
                     System.out.println("< %d inserted.", key);
                 }
-            } else if (instruct.equals("> update")) {
+            } else if (instruct.equals("update")) {
                 // reads key and value
                 long key = in.nextLong();
                 String value = in.nextLine();
@@ -45,7 +46,7 @@ public class btdb {
                     // print confirmation
                     System.out.println("< %d updated.", key);
                 }
-            } else if (instruct.equals("> select")) {
+            } else if (instruct.equals("select")) {
                 long key = in.nextLong();
                 if(search(key) <= 0){
                     System.out.printf("< ERROR: %d does not exist.", key);
@@ -57,7 +58,7 @@ public class btdb {
                     // print confirmation
                     System.out.printf("%d => %s", key, value);
                 }
-            } else if (instruct.equals("> exit")) {
+            } else if (instruct.equals("exit")) {
                 System.exit(0);
             } else {
                 System.out.println("< ERROR: invalid command.");
