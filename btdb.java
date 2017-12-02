@@ -54,7 +54,7 @@ public class btdb {
                     //get record number
                     
                     //get key value
-                    String value = btfile.readKeyValue();
+                    String value = btFile.readKeyValue();
                     // print confirmation
                     System.out.printf("%d => %s\n", key, value);
                 }
