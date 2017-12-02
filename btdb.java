@@ -16,8 +16,8 @@ public class btdb {
         // creates/reads value file
         //ValuesRecords valFile = new ValuesRecords(val);
         
+        System.out.println("> ");
         while(in.hasNextLine()) {
-            System.out.println("> ");
             // reads instruction
             String instruct = in.next();
             if(instruct.equals("insert")) {
@@ -26,7 +26,7 @@ public class btdb {
                 String value = in.nextLine();
                 // checks if key already exists
                 if(btFile.search(btFile.rootLocation, key) >= 0){
-                    System.out.printf("< ERROR: %d already exists.\n");
+                    System.out.printf("< ERROR: %d already exists.\n", key);
                 } else {
                     // adds to btfile
                     btFile.addKey(key, value);
@@ -63,6 +63,7 @@ public class btdb {
             } else {
                 System.out.println("< ERROR: invalid command.");
             }
+            System.out.println("> ");
         }
     }
 }
