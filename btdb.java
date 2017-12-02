@@ -12,9 +12,9 @@ public class btdb {
         String val = args[1];
         
         // creates/reads b-tree file
-        BTRecords btFile = new BTRecords(bt);
+        BTRecords btFile = new BTRecords(bt, val);
         // creates/reads value file
-        ValuesRecords valFile = new ValuesRecords(val);
+        //ValuesRecords valFile = new ValuesRecords(val);
         
         while(in.hasNextLine()) {
             // reads instruction
@@ -28,10 +28,7 @@ public class btdb {
                     System.out.printf("< ERROR: %d already exists.");
                 } else {
                     // adds to bt file
-                    
-                    // adds to val File
-                    valFile.access(valFile.countRecords);
-                    valFile.write(value);
+                    btFile.addKey(key, value);
                     // print confirmation
                     System.out.println("< %d inserted.", key);
                 }
@@ -43,11 +40,8 @@ public class btdb {
                 if(search(key) <= 0){
                     System.out.printf("< ERROR: %d does not exist.", key);
                 } else {
-                    // find key offset in bt file
-                    
                     //update record in val file
-                    valFile.access();
-                    valFile.write(value);
+                    btFile.updateRecords(key, value);
                     // print confirmation
                     System.out.println("< %d updated.", key);
                 }
