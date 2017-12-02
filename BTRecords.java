@@ -33,6 +33,11 @@ public class BTRecords {
         file.seek(16 + i*8*entries);
     }
     
+    public void goToRoot() throws IOException {
+        long rootRec = file.readLong(file.seek(8));
+        findNodeRecord(rootRec);
+    }
+    
     public long read() throws IOException {
         return file.readLong();
     }
