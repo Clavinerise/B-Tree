@@ -3,9 +3,6 @@ import java.util.*;
 import java.io.*;
 
 public class btdb {
-    int RECORD_COUNT_OFFSET = 0;
-    long countRecords;
-    RandomAccessFile valFile;
 
     public static void main(String args[]) throws IOException{
         
@@ -22,13 +19,13 @@ public class btdb {
         while(in.hasNextLine()) {
             // reads instruction
             String instruct = in.next();
-            if(instruct.equals("insert")) {
+            if(instruct.equals("> insert")) {
                 // reads input key and value
                 long key = in.nextLong();
                 String value = in.nextLine();
                 // checks if key already exists
                 if(search(key) >= 0){
-                    System.out.printf("ERROR: %d already exists.");
+                    System.out.printf("< ERROR: %d already exists.");
                 } else {
                     // adds to bt file
                     
@@ -36,15 +33,15 @@ public class btdb {
                     valFile.access(valFile.countRecords);
                     valFile.write(value);
                     // print confirmation
-                    System.out.println(key + " inserted.", key);
+                    System.out.println("< %d inserted.", key);
                 }
-            } else if (instruct.equals("update")) {
+            } else if (instruct.equals("> update")) {
                 // reads key and value
                 long key = in.nextLong();
                 String value = in.nextLine();
                 // checks if key already exists
                 if(search(key) <= 0){
-                    System.out.printf("ERROR: %d does not exist.", key);
+                    System.out.printf("< ERROR: %d does not exist.", key);
                 } else {
                     // find key offset in bt file
                     
@@ -52,12 +49,12 @@ public class btdb {
                     valFile.access();
                     valFile.write(value);
                     // print confirmation
-                    System.out.println(key + " updated.");
+                    System.out.println("< %d updated.", key);
                 }
-            } else if (instruct.equals("select")) {
+            } else if (instruct.equals("> select")) {
                 long key = in.nextLong();
                 if(search(key) <= 0){
-                    System.out.printf("ERROR: %d does not exist.", key);
+                    System.out.printf("< ERROR: %d does not exist.", key);
                 } else {
                     //get record number
                     
@@ -66,10 +63,10 @@ public class btdb {
                     // print confirmation
                     System.out.printf("%d => %s", key, value);
                 }
-            } else if (instruct.equals("exit")) {
+            } else if (instruct.equals("> exit")) {
                 System.exit(0);
             } else {
-                System.out.println("ERROR: invalid command.");
+                System.out.println("< ERROR: invalid command.");
             }
         }
     }
