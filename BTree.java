@@ -1,31 +1,24 @@
 import java.util.Arrays;
 import java.util.Comparator;
 
-public class BTree {
-	final int order = 7;
+public class Btree {
+	final int order = 5;
 	int minKeys = order/2;
 	Node root;
 	
-	public BTree() {
+	public Btree() {
 		root = new Node(order);
 	}
 	
 	public void insert(Node z, int key) {
 		if(!z.hasChild()) {
-			if(!z.isFull()) 
-				z.add(key);
-			else {
-				z.add(key);
+			z.add(key);
+			if(z.isFull()) 
 				split(z);
-			}
 		}
 		else {
 			for (int i = 0; i < order; i++) {
-				if (z.key[i]==null) {
-					insert(z.child[i], key);
-					break;
-				}
-				else if (key < z.key[i]) {
+				if (z.key[i]==null || key < z.key[i]) {
 					insert(z.child[i], key);
 					break;
 				}
@@ -45,7 +38,9 @@ public class BTree {
 				child2.add(z.key[i]);
 				z.key[i] = null;
 			}
-			root.child[1] = child2;
+			root.addChild(child2);
+			child2.parent = z.parent;
+			z.reset();
 		}
 		
 		else {
@@ -57,11 +52,17 @@ public class BTree {
 				z.key[i] = null;
 			}
 			z.parent.addChild(newChild);
+			newChild.parent = z.parent;
+			z.reset();
 			if (z.parent.isFull()) {
-				split(z.parent);
+				Node parent = z.parent;
+				split(parent);
 				for (int i = minKeys+1; i < order; i++) {
-					z.parent.child[2].addChild(z.child[i]);
-					z.child[i] = null;
+					parent.parent.child[1].addChild(parent.child[i]);
+					parent.child[i] = null;
+				}
+				for (int i = 0; i < minKeys+1; i++) {
+					parent.parent.child[1].child[i].parent = parent.parent.child[1];
 				}
 			}
 		}
@@ -89,7 +90,7 @@ public class BTree {
 		}
 		
 		public boolean isFull() {
-			if (key[numKeys-1] == null)
+			if (key[numKeys] == null)
 				return false;
 			else 
 				return true;
@@ -147,6 +148,9 @@ public class BTree {
 				 });
 		}
 		
-		 
+		public void reset() {
+			childPointer = minKeys+1;
+			keyPointer = minKeys;
+		}
 	}
 }
