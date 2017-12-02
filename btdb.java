@@ -14,31 +14,64 @@ public class btdb {
         String bt = args[0];
         String val = args[1];
         
+        // creates/reads b-tree file
         BTRecords btFile = new BTRecords(bt);
+        // creates/reads value file
         ValuesRecords valFile = new ValuesRecords(val);
         
         while(in.hasNextLine()) {
+            // reads instruction
             String instruct = in.next();
             if(instruct.equals("insert")) {
-                int key = in.nextInt();
+                // reads input key and value
+                long key = in.nextLong();
                 String message = in.nextLine();
-                valFile.write(message);
-                System.out.println(key + " inserted.");
+                // checks if key already exists
+                if(search(key)){
+                    System.out.printf("ERROR: %d already exists.");
+                } else {
+                    // adds to bt file
+                    
+                    // adds to val File
+                    valFile.access(valFile.countRecords);
+                    valFile.write(message);
+                    // print confirmation
+                    System.out.println(key + " inserted.", key);
+                }
             } else if (instruct.equals("update")) {
+                // reads key and value
                 int key = in.nextInt();
                 String message = in.nextLine();
-                
-                System.out.println(key + " updated.");
+                // checks if key already exists
+                if(!search(key)){
+                    System.out.printf("ERROR: %d does not exist.", key);
+                } else {
+                    //update record in val file
+                    valFile.access();
+                    valFile.write(message);
+                    // print confirmation
+                    System.out.println(key + " updated.");
+                }
             } else if (instruct.equals("select")) {
                 int key = in.nextInt();
-                
-                
-                System.out.println(key + " =>");
+                if(!search(key)){
+                    System.out.printf("ERROR: %d does not exist.", key);
+                } else {
+                    //get record value
+                    valFile.access();
+                    valFile.readValue();
+                    // print confirmation
+                    System.out.printf("%d => %s", key, message);
+                }
             } else if (instruct.equals("exit")) {
                 System.exit(0);
             } else {
                 System.out.println("ERROR: invalid command.");
             }
         }
+    }
+    
+    public boolean search(int key){
+        
     }
 }
