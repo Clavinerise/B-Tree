@@ -16,7 +16,7 @@ public class Btree {
 	}
 	
 	//insert a key to the btree
-	public void insert(Node z, int key) {
+	public void insert(Node z, long key) {
 		//to use node z must always be the root node
 		//check if node has a child since we only add to the deepest layer
 		if(!z.hasChild()) {
@@ -146,7 +146,7 @@ public class Btree {
 		int numChild;
 		int numKeys;
 		int minKeys;
-		Integer[] key;
+		Long[] key;
 		Node[] child;
 		Node parent;
 		int record;
@@ -173,7 +173,7 @@ public class Btree {
 		}
 		
 		//adds a new key and sorts the keys in order
-		public void add(int y) {
+		public void add(long y) {
 			key[keyPointer] = y;
 			keyPointer++;
 			Arrays.sort(key, new Comparator<Long>() {
