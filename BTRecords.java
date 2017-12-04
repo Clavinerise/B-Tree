@@ -10,10 +10,12 @@ public class BTRecords {
     long rootLocation; // location of the root record
     int order = 7;
     int entries = 2+3*(order-1);
+    Btree atree;
     
     public BTRecords(String btreeFile, String valfile) throws IOException {
         valFile = new ValuesRecords(valfile);
         File file = new File(btreeFile);
+        atree = new Btree(order);
 
         if (!file.exists()) {
             this.countRecords = 0;
@@ -33,95 +35,54 @@ public class BTRecords {
     // INSERT instruction
     public void addKey(long key, String value) throws IOException {
         // BTree add
-        
+        atree.insert(atree.root,key);
+        rootLocation = atree.root.record;
+        countRecords = atree.record+1;
         // valFile add
         valFile.access(valFile.countRecords);
         valFile.write(value);
+        // update btfile
+        
     }
     
     // UPDATE instruction
-    public void updateRecords(long key, String value) throws IOException {
+    public boolean updateRecords(long key, String value) throws IOException {
         // get offset key from btFile
-        
-        // valFile update
-        valFile.access();
-        valFile.write(value);
+        int[] recpos = new int[2];
+        recpos = atree.recNDPos(key);
+        int record  = int[0];
+        int position = int[1];
+        if (record == -1){
+            return false;
+        }
+        else{
+            // go to value offset record
+            btfile.seek((16 + (record * 8 * entries)) + (24 + (8 * 3 * numKey)));
+            // get value offset
+            long offset = btfile.readLong();
+            valFile.access();
+            valFile.write(value);
+            return true;
+        }
     }
     
     // SELECT instruction
-    public String readKeyValue(long key, long record, long numKey) throws IOException {
-        // go to value offset record
-        btfile.seek((16 + (record * 8 * entries)) + (24 + (8 * 3 * numKey)));
-        // get value offset
-        long offset = btfile.readLong();
-        valFile.access(offset);
-        String value = valFile.readValue();
-        return value;
-    }
-    
-    // go to the i-th node record
-    public void findNodeRecord(long i) throws IOException {
-        //seek the B-Tree node record whose ID is i
-        btfile.seek(16 + i*8*entries);
-    }
-    
-    // go to the root node
-    public void goToRoot() throws IOException {
-        findNodeRecord(rootLocation);
-    }
-    
-    // returns the record's numChild ID
-    // record -> node record, numChild -> ith child
-    public long readChildID(long record, int numChild) throws IOException {
-        btfile.seek((16 + (record * 8 * entries)) + (8 + (8 * 3 * numChild)));
-        return btfile.readLong();
-    }
-    
-    // returns the numKey key of record
-    // record -> node record, numKey -> ith key
-    public long readKey(long record, int numKey) throws IOException {
-        btfile.seek((16 + (record * 8 * entries)) + (16 + (8 * 3 * numKey)));
-        long key = btfile.readLong();
-        return key;
-    }
-    
-    public boolean hasChild(long node) throws IOException{
-        btfile.seek((16 + (node * 8 * entries)) + 8);
-        if (btfile.readLong() == -1) {
-            return false;
-        } else {
-            return true;
+    public String readKeyValue(long key) throws IOException {
+        int[] recpos = new int[2];
+        recpos = atree.recNDPos(key);
+        int record  = int[0];
+        int position = int[1];
+        if (record == -1){
+            return "null";
         }
-    }
-    
-    public boolean hasParent(long node) throws IOException{
-        btfile.seek((16 + (node * 8 * entries)));
-        if (btfile.readLong() == -1) {
-            return false;
-        } else {
-            return true;
+        else{
+            // go to value offset record
+            btfile.seek((16 + (record * 8 * entries)) + (24 + (8 * 3 * numKey)));
+            // get value offset
+            long offset = btfile.readLong();
+            valFile.access(offset);
+            String value = valFile.readValue();
+            return value;
         }
-    }
-    
-    // checks if node is full
-    public boolean isFull(long node) throws IOException{
-        if (readChildID(node, 4) == -1) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-    
-    // writes a key into the btfile
-    // should be modified to work for Btree
-    public void write(long in) throws IOException {
-        btfile.writeLong(in);
-    }
-    
-    // searches for a key
-    // should return the node record # (?)
-    // or maybe return boolean
-    public long search(long record, long key) throws IOException{
-        
     }
 }
