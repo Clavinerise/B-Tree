@@ -2,13 +2,17 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 public class Btree {
-	final int order = 5;
-	int minKeys = order/2;
+	int order;
+	int minKeys;
 	Node root;
+	int record =0;
 	
-	public Btree() {
+	public Btree(int x) {
 		//initialize the btree by creating an empty root node
-		root = new Node(order);
+		root = new Node(order, record);
+		record ++;
+		order = x;
+		minKeys = order/2;
 	}
 	
 	//insert a key to the btree
@@ -39,7 +43,8 @@ public class Btree {
 		//if it is root node do the following
 		if (!z.hasParent()) {
 			//creates a new node that will become the new root node
-			z.parent = new Node(order);
+			z.parent = new Node(order, record);
+			record++;
 			root = z.parent;
 			//add in the middle key into the root node
 			root.add(z.key[minKeys]);
@@ -47,7 +52,8 @@ public class Btree {
 			//make the original root node the child of the new root node
 			root.child[0] = z;
 			//create a new child node for the root node
-			Node child2 = new Node(order);
+			Node child2 = new Node(order, record);
+			record++;
 			//move the later half of the original node to the new child 
 			for (int i = minKeys + 1; i < order; i++) {
 				child2.add(z.key[i]);
@@ -67,7 +73,8 @@ public class Btree {
 			z.parent.add(z.key[minKeys]);
 			z.key[minKeys] = null;
 			//create a new child due to the split
-			Node newChild = new Node(order);
+			Node newChild = new Node(order, record);
+			record++;
 			//move later half of the node into the new child
 			for (int i = minKeys + 1; i < order; i++) {
 				newChild.add(z.key[i]);
@@ -98,6 +105,40 @@ public class Btree {
 		}
 	}
 
+	public Node searchNode(Node n, long key) {
+		for(int i = 0; i < order; i++){
+			if(n.key[i] == key)
+				return n;
+			else if(n.hasChild){
+				if(n.key[i] > key)
+					searchRec(n.child[i], key);
+				else if(n.key[i] == null){
+					searchRec(n.child[i],key);
+					return null;
+				}
+			}
+			else
+				return null;
+		}
+	}
+	
+	public int[] recNDPos (long key){
+		int[] arr = new int[2];
+		Node n = searchRec(root,key);
+		if (Node != null){
+			arr[0] = n.record;
+			for (int i = 0; i < order; i++){
+				if (n.key[i] == key){
+					arr[1] = i;
+					break;
+				}
+			}
+		}
+		else{
+			arr[0] = -1;
+			arr[1] = -1;
+		}
+		return arr;
 	
 	class Node {
 		int keyPointer;
@@ -108,16 +149,19 @@ public class Btree {
 		Integer[] key;
 		Node[] child;
 		Node parent;
+		int record;
+		
 		
 		//instantiates node of order x
-		public Node(int x) {
+		public Node(int x, int y) {
 			numChild = x;
 			numKeys = x-1;
 			keyPointer = 0;
 			childPointer = 1;
 			minKeys = numKeys/2;
-			key = new Integer[numKeys+1];
+			key = new Long[numKeys+1];
 			child = new Node[numChild+1];
+			record = y;
 		}
 		
 		//check if the node is full/overloaded
@@ -132,8 +176,8 @@ public class Btree {
 		public void add(int y) {
 			key[keyPointer] = y;
 			keyPointer++;
-			Arrays.sort(key, new Comparator<Integer>() {
-				 public int compare(Integer i, Integer j) {
+			Arrays.sort(key, new Comparator<Long>() {
+				 public long compare(Long i, Long j) {
 					 if (i == null && j == null) {
 						 return 0;
 						 }
