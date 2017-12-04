@@ -85,4 +85,24 @@ public class BTRecords {
             return value;
         }
     }
+    
+    // extracts keys from btfile and returns an array
+    public long[] extractKeys(int record) {
+        long[] nodeKeys = new long[order];
+        for(int i = 0; i < order-1; i++) {
+            btfile.seek((16 + (record * 8 * entries)) + (16 + (8 * 3 * i)));
+            long r = btr.readLong();
+            nodeKeys[i] = r;
+        }
+        return nodeKeys;
+    }
+    
+    // places the keys and their corresponding offsets into a record
+    public void placeKeysAndOffset(int record, long[] keys, long[] offset) {
+        for(int i = 0; i < order-1; i++) {
+            btfile.seek((16 + (record * 8 * entries)) + (16 + (8 * 3 * i)));
+            btfile.writeLong(keys[i]);
+            btfile.writeLong(offset[i]);
+        }
+    }
 }
