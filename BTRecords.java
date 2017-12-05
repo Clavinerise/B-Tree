@@ -50,8 +50,8 @@ public class BTRecords {
         // get offset key from btFile
         int[] recpos = new int[2];
         recpos = atree.recNDPos(key);
-        int record  = int[0];
-        int position = int[1];
+        int record  = recpos[0];
+        int position = recpos[1];
         if (record == -1){
             return false;
         }
@@ -70,8 +70,8 @@ public class BTRecords {
     public String readKeyValue(long key) throws IOException {
         int[] recpos = new int[2];
         recpos = atree.recNDPos(key);
-        int record  = int[0];
-        int position = int[1];
+        int record  = recpos[0];
+        int position = recpos[1];
         if (record == -1){
             return "null";
         }
@@ -91,7 +91,7 @@ public class BTRecords {
         long[] nodeKeys = new long[order];
         for(int i = 0; i < order-1; i++) {
             btfile.seek((16 + (record * 8 * entries)) + (16 + (8 * 3 * i)));
-            long r = btr.readLong();
+            long r = btfile.readLong();
             nodeKeys[i] = r;
         }
         return nodeKeys;
@@ -113,6 +113,6 @@ public class BTRecords {
     
     public long rootLocation() throws IOException {
         btfile.seek(8);
-        return btfile.readLong()
+        return btfile.readLong();
     }
 }
