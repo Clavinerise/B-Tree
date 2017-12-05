@@ -37,8 +37,6 @@ public class ValuesRecords {
         valfile.writeShort(len);
         // write the byte array
         valfile.write(bArr);
-        // update header to reflect the count of stored records
-        countRecords++;
     }
 
     // returns the string value
