@@ -105,4 +105,14 @@ public class BTRecords {
             btfile.writeLong(offset[i]);
         }
     }
+    
+    public long getNumRecords() {
+        btfile.seek(0);
+        return btfile.readLong();
+    }
+    
+    public long rootLocation() {
+        btfile.seek(8);
+        return btfile.readLong()
+    }
 }
