@@ -58,7 +58,7 @@ public class btdb {
                 else {
                     String value = btFile.readKeyValue(key);
                     // print confirmation
-                    System.out.printf("%d => %s\n", key, value);
+                    System.out.printf("< %d => %s\n", key, value);
                 }
             } else if (instruct.equals("exit")) {
                 System.exit(0);
