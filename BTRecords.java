@@ -45,6 +45,17 @@ public class BTRecords {
         
     }
     
+    public boolean keyExist(long key) throws IOException{
+    	int[] recpos = new int[2];
+        recpos = atree.recNDPos(key);
+        if (recpos[0] == -1){
+            return false;
+        }
+        else {
+        	return true;
+        }
+    }
+    
     // UPDATE instruction
     public boolean updateRecords(long key, String value) throws IOException {
         // get offset key from btFile
@@ -57,10 +68,10 @@ public class BTRecords {
         }
         else{
             // go to value offset record
-            btfile.seek((16 + (record * 8 * entries)) + (24 + (8 * 3 * numKey)));
+            btfile.seek((16 + (record * 8 * entries)) + (24 + (8 * 3 * position)));
             // get value offset
             long offset = btfile.readLong();
-            valFile.access();
+            valFile.access(offset);
             valFile.write(value);
             return true;
         }
@@ -77,7 +88,7 @@ public class BTRecords {
         }
         else{
             // go to value offset record
-            btfile.seek((16 + (record * 8 * entries)) + (24 + (8 * 3 * numKey)));
+            btfile.seek((16 + (record * 8 * entries)) + (24 + (8 * 3 * position)));
             // get value offset
             long offset = btfile.readLong();
             valFile.access(offset);
