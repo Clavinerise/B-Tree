@@ -9,10 +9,10 @@ public class Btree {
 	
 	public Btree(int x) {
 		//initialize the btree by creating an empty root node
-		root = new Node(order, record);
-		record ++;
 		order = x;
 		minKeys = order/2;
+		root = new Node(order, record);
+		record++;
 	}
 	
 	//insert a key to the btree
@@ -104,28 +104,28 @@ public class Btree {
 			}
 		}
 	}
-
+	
 	public Node searchNode(Node n, long key) {
-		for(int i = 0; i < order; i++){
-			if(n.key[i] == key)
+		for (int i = 0; i < order; i++) {
+			if (n.key[i] != null && n.key[i] == key) 
 				return n;
-			else if(n.hasChild){
-				if(n.key[i] > key)
-					searchRec(n.child[i], key);
-				else if(n.key[i] == null){
-					searchRec(n.child[i],key);
-					return null;
+			else {
+				for(int j = 0; j < order+1; j++) {
+					if(n.child[i] != null) {
+						Node l = searchNode(n.child[i], key);
+						if(l != null) 
+							return l;
+					}
 				}
 			}
-			else
-				return null;
 		}
+		return null;
 	}
 	
 	public int[] recNDPos (long key){
 		int[] arr = new int[2];
-		Node n = searchRec(root,key);
-		if (Node != null){
+		Node n = searchNode(root,key);
+		if (n != null){
 			arr[0] = n.record;
 			for (int i = 0; i < order; i++){
 				if (n.key[i] == key){
@@ -139,8 +139,9 @@ public class Btree {
 			arr[1] = -1;
 		}
 		return arr;
+	}
 	
-	class Node {
+	public class Node {
 		int keyPointer;
 		int childPointer;
 		int numChild;
@@ -177,7 +178,7 @@ public class Btree {
 			key[keyPointer] = y;
 			keyPointer++;
 			Arrays.sort(key, new Comparator<Long>() {
-				 public long compare(Long i, Long j) {
+				 public int compare(Long i, Long j) {
 					 if (i == null && j == null) {
 						 return 0;
 						 }
