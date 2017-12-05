@@ -87,7 +87,7 @@ public class BTRecords {
     }
     
     // extracts keys from btfile and returns an array
-    public long[] extractKeys(int record) {
+    public long[] extractKeys(int record) throws IOException{
         long[] nodeKeys = new long[order];
         for(int i = 0; i < order-1; i++) {
             btfile.seek((16 + (record * 8 * entries)) + (16 + (8 * 3 * i)));
@@ -98,7 +98,7 @@ public class BTRecords {
     }
     
     // places the keys and their corresponding offsets into a record
-    public void placeKeysAndOffset(int record, long[] keys, long[] offset) {
+    public void placeKeysAndOffset(int record, long[] keys, long[] offset) throws IOException {
         for(int i = 0; i < order-1; i++) {
             btfile.seek((16 + (record * 8 * entries)) + (16 + (8 * 3 * i)));
             btfile.writeLong(keys[i]);
@@ -106,12 +106,12 @@ public class BTRecords {
         }
     }
     
-    public long getNumRecords() {
+    public long getNumRecords() throws IOException{
         btfile.seek(0);
         return btfile.readLong();
     }
     
-    public long rootLocation() {
+    public long rootLocation() throws IOException {
         btfile.seek(8);
         return btfile.readLong()
     }
