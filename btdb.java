@@ -25,36 +25,38 @@ public class btdb {
                 long key = in.nextLong();
                 String value = in.nextLine();
                 // checks if key already exists
-                if(btFile.search(btFile.rootLocation, key) >= 0){
+                if(btFile.keyExist(key)){
                     System.out.printf("< ERROR: %d already exists.\n", key);
-                } else {
+                } 
+                else {
                     // adds to btfile
                     btFile.addKey(key, value);
                     // print confirmation
                     System.out.printf("< %d inserted.\n", key);
                 }
-            } else if (instruct.equals("update")) {
+            } 
+            else if (instruct.equals("update")) {
                 // reads key and value
                 long key = in.nextLong();
                 String value = in.nextLine();
                 // checks if key already exists
-                if(btFile.search(btFile.rootLocation, key) <= 0){
+                if(!btFile.keyExist(key)){
                     System.out.printf("< ERROR: %d does not exist.\n", key);
-                } else {
+                } 
+                else {
                     //update record in valfile through btfile
                     btFile.updateRecords(key, value);
                     // print confirmation
                     System.out.printf("< %d updated.\n", key);
                 }
-            } else if (instruct.equals("select")) {
+            } 
+            else if (instruct.equals("select")) {
                 long key = in.nextLong();
-                if(btFile.search(btFile.rootLocation, key) <= 0){
+                if(!btFile.keyExist(key)){
                     System.out.printf("< ERROR: %d does not exist.\n", key);
-                } else {
-                    //get record number
-                    
-                    //get key value
-                    String value = btFile.readKeyValue();
+                } 
+                else {
+                    String value = btFile.readKeyValue(key);
                     // print confirmation
                     System.out.printf("%d => %s\n", key, value);
                 }
