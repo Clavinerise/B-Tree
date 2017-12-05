@@ -67,5 +67,6 @@ public class btdb {
             }
             System.out.print("> ");
         }
+        in.close();
     }
 }
