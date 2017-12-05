@@ -40,6 +40,7 @@ public class BTRecords {
         // valFile add
         valFile.access(valFile.countRecords);
         valFile.write(value);
+        valFile.countRecords++;
         // update btfile
         
     }
