@@ -117,6 +117,14 @@ public class BTRecords {
         }
     }
     
+    // places children into a record
+    public void placeChildren(int record, long[] children) throws IOException {
+        for(int i = 0; i < order-1; i++) {
+            btfile.seek((16 + (record * 8 * entries)) + (8 + (8 * 3 * i)));
+            btfile.writeLong(children[i]);
+        }
+    }
+    
     public long getNumRecords() throws IOException{
         btfile.seek(0);
         return btfile.readLong();
