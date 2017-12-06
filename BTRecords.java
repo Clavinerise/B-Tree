@@ -29,7 +29,7 @@ public class BTRecords {
             this.btfile.seek(RECORD_COUNT_OFFSET);
             this.countRecords = this.btfile.readLong(); 
             this.rootLocation = this.btfile.readLong();
-            wBtree();
+            wBtree(rootLocation);
         }
     }
     
@@ -118,7 +118,7 @@ public class BTRecords {
     	}
     
     // extracts all keys from btfile and returns an array
-    public long[] extractKeys(int record) throws IOException{
+    public long[] extractKeys(long record) throws IOException{
         long[] nodeKeys = new long[entries];
         for(int i = 0; i < entries; i++) {
             btfile.seek(16 + (record * 8 * entries));
@@ -144,21 +144,24 @@ public class BTRecords {
     	}
     }
     
-    public void wBtree() throws IOException{
-    	for (int i = 0; i < countRecords; i++) {
-    		long[] entry = new long[entries];
-    		entry = extractKeys(i);
-    		long parent = entry[0];
-    		Long[] children = new Long[order];
-    		for (int j = 0; j < order+1; j++) {
-    			entry[1+(3*j)] = children[j];
+    public void wBtree(long record) throws IOException{
+    	long[] entry = new long[entries];
+    	entry = extractKeys(record);
+    	long parent = entry[0];
+    	long[] children = new long[order];
+    	for (int j = 0; j < order; j++) {
+    		entry[1+(3*j)] = children[j];
+    	}
+    	Long[][] keys = new Long[order][2];
+    	for (int j = 0; j < order-1;j++) {
+    		entry[2+(3*j)] = keys[j][0];
+    		entry[3+(3*j)] = keys[j][1];
+    	}
+    	atree.nodeAdder(keys, (int)record, parent);
+    	for(int i = 0; i < order; i++) {
+    		if(children[i] != -1) {
+    			wBtree(children[i]);
     		}
-    		Long[][] keys = new Long[order][2];
-    		for (int j = 0; j < order-1;j++) {
-    			entry[2+(3*j)] = keys[j][0];
-    			entry[3+(3*j)] = keys[j][1];
-    		}
-    		atree.nodeAdder(keys, parent, children, i);
     	}
     }
 }
