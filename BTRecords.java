@@ -48,7 +48,7 @@ public class BTRecords {
     }
     
     public void btUpdate() throws IOException{
-    	for (int i = 0; i < countRecords-1; i++) {
+    	for (int i = 0; i < countRecords; i++) {
     		if(atree.findNode(atree.root,i).parent==null) {
     			placeParent(i,-1);
     		}
