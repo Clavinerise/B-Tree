@@ -125,6 +125,7 @@ public class BTRecords {
         }
     }
     
+    // places children in the indicated record
     public void placeChildren(int record, long[] children) throws IOException {
     	 for(int i = 0; i < order; i++) {
     		 btfile.seek((16 + (record * 8 * entries)) + (8 + (8 * 3 * i)));
@@ -137,8 +138,21 @@ public class BTRecords {
         return btfile.readLong();
     }
     
+    // returns the location of the root
     public long rootLocation() throws IOException {
         btfile.seek(8);
+        return btfile.readLong();
+    }
+    
+    // places the parent record number into the record for the indicated node
+    public void placeParent(long record, long parentRecord) throws IOException {
+        btfile.seek(16 + (record * 8 * entries));
+        btfile.writeLong(parentRecord);
+    }
+    
+    // extracts parent record number from the record
+    public long getParent(long record) throws IOException {
+        btfile.seek(16 + (record * 8 * entries));
         return btfile.readLong();
     }
 }
