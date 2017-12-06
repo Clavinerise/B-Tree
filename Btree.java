@@ -199,7 +199,12 @@ public class Btree {
 	
 	public void nodeAdder(Long[][] key, int record, long parent) {
 		Node n = new Node(order,record);
-		n.key = key;
+		for (int i = 0; i < key.length-1; i++) {
+			if (key[i][0] != -1) {
+				n.key[i][0] = key[i][0];
+				n.key[i][1] = key[i][1];
+			}
+		}
 		this.record++;
 		if (parent == -1) {
 			root = n;
@@ -208,6 +213,7 @@ public class Btree {
 			n.parent = findNode(root, (int)parent);
 			n.parent.addSpec(n);
 		}
+		n.adjustKeyPointer();
 		
 	}
 	
@@ -325,6 +331,15 @@ public class Btree {
 					 }
 				 });
 			childPointer = specPointer;
+		}
+		
+		public void adjustKeyPointer() {
+			for (int i = 0; i < key.length; i++) {
+				if (key[i][0] == null) {
+					keyPointer = i;
+					break;
+				}
+			}
 		}
 	}
 }
