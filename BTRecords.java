@@ -124,7 +124,7 @@ public class BTRecords {
     public long[] extractKeys(long record) throws IOException{
         long[] nodeKeys = new long[entries];
         for(int i = 0; i < entries; i++) {
-            btfile.seek(16 + (record * 8 * entries));
+            btfile.seek(16 + (record * 8 * entries) + (i*8));
             long r = btfile.readLong();
             nodeKeys[i] = r;
         }
