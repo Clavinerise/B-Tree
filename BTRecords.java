@@ -29,6 +29,7 @@ public class BTRecords {
             this.btfile.seek(RECORD_COUNT_OFFSET);
             this.countRecords = this.btfile.readLong(); 
             this.rootLocation = this.btfile.readLong();
+            System.out.println(rootLocation);
             wBtree(rootLocation);
         }
     }
@@ -164,8 +165,9 @@ public class BTRecords {
     		}
     	}
     }
-	public void close() throws IOException{
-		valFile.close();
-		btfile.close();
-	}
+    
+    public void close() throws IOException{
+    	valFile.close();
+    	btfile.close();
+    }
 }
