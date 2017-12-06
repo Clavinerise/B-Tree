@@ -5,14 +5,15 @@ public class Btree {
 	int order;
 	int minKeys;
 	Node root;
-	int record =0;
+	int record;
 	
 	public Btree(int x) {
 		//initialize the btree by creating an empty root node
+		record = 0;
 		order = x;
 		minKeys = order/2;
 		root = new Node(order, record);
-		record++;
+		this.record++;
 	}
 	
 	//insert a key to the btree
@@ -44,7 +45,7 @@ public class Btree {
 		if (!z.hasParent()) {
 			//creates a new node that will become the new root node
 			z.parent = new Node(order, record);
-			record++;
+			this.record++;
 			root = z.parent;
 			//add in the middle key into the root node
 			root.add(z.key[minKeys][0], z.key[minKeys][1]);
@@ -54,7 +55,7 @@ public class Btree {
 			root.child[0] = z;
 			//create a new child node for the root node
 			Node child2 = new Node(order, record);
-			record++;
+			this.record++;
 			//move the later half of the original node to the new child 
 			for (int i = minKeys + 1; i < order; i++) {
 				child2.add(z.key[i][0], z.key[i][1]);
@@ -77,7 +78,7 @@ public class Btree {
 			z.key[minKeys][1] = null;
 			//create a new child due to the split
 			Node newChild = new Node(order, record);
-			record++;
+			this.record++;
 			//move later half of the node into the new child
 			for (int i = minKeys + 1; i < order; i++) {
 				newChild.add(z.key[i][0], z.key[i][1]);
@@ -205,8 +206,7 @@ public class Btree {
 		}
 		else {
 			n.parent = findNode(root, (int)parent);
-			n.parent.specReset();
-			n.parent.addChild(n);
+			n.parent.addSpec(n);
 		}
 		
 	}
@@ -217,6 +217,7 @@ public class Btree {
 		int numChild;
 		int numKeys;
 		int minKeys;
+		int specPointer;
 		Long[][] key;
 		Node[] child;
 		Node parent;
@@ -306,8 +307,24 @@ public class Btree {
 			keyPointer = minKeys;
 		}
 		
-		public void specReset() {
-			childPointer = 0;
+		public void addSpec(Node x) {
+			child[specPointer] = x;
+			specPointer++;
+			Arrays.sort(child, new Comparator<Node>() {
+				 public int compare(Node i, Node j) {
+					 if (i == null && j == null) {
+						 return 0;
+						 }
+					 if (i == null) {
+						 return 1;
+						 }
+					 if (j == null) {
+						 return -1;
+						 }
+					 return i.key[0][0].compareTo(j.key[0][0]);
+					 }
+				 });
+			childPointer = specPointer;
 		}
 	}
 }
