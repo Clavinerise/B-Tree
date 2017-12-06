@@ -1,4 +1,3 @@
-import java.util.*;
 import java.io.*;
 
 public class ValuesRecords {
@@ -6,9 +5,9 @@ public class ValuesRecords {
     RandomAccessFile valfile;
     long countRecords;
     int RECORD_COUNT_OFFSET = 0;
-    int length = 2; // in bytes
-    int valuesStr = 256; // in bytes
-    int valSize = length + valuesStr; // in bytes
+    int length = 2;
+    int valueStr = 256;
+    int valSize = length + valueStr;
     
     public ValuesRecords(String strFile) throws IOException {
         File file = new File(strFile);
@@ -53,8 +52,7 @@ public class ValuesRecords {
         String message = new String(bArr, "UTF-8");
         return message;
     }
-    
     public void close() throws IOException{
-        valfile.close();
-    }
+    	valfile.close();
+    	}
 }
