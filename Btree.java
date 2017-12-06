@@ -195,17 +195,19 @@ public class Btree {
 		return null;
 	}
 	
-	public void rootAdder(Long[][] key, int record) {
-		Node n = new Node(order,record);
-		n.key = key;
-		root = n;
-	}
 	
-	public void childAdder(Long[][] key, Node parent, int record) {
+	public void nodeAdder(Long[][] key, int record, long parent) {
 		Node n = new Node(order,record);
 		n.key = key;
-		n.parent = parent;
-		n.parent.addChild(n);
+		this.record++;
+		if (parent == -1) {
+			root = n;
+		}
+		else {
+			n.parent = findNode(root, (int)parent);
+			n.parent.addChild(n);
+		}
+		
 	}
 	
 	public class Node {
