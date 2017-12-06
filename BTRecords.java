@@ -8,7 +8,7 @@ public class BTRecords {
     int RECORD_COUNT_OFFSET = 0;
     long rootLocation; // location of the root record
     
-    int order = 5;
+    int order = 7;
     int entries = 2+3*(order-1);
     Btree atree;
     
@@ -123,7 +123,7 @@ public class BTRecords {
     public long[] extractKeys(long record) throws IOException{
         long[] nodeKeys = new long[entries];
         for(int i = 0; i < entries; i++) {
-            btfile.seek(16 + (record * 8 * entries)+ (i*8));;
+            btfile.seek(16 + (record * 8 * entries)+ (i*8));
             long r = btfile.readLong();
             nodeKeys[i] = r;
         }
