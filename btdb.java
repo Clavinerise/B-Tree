@@ -61,6 +61,7 @@ public class btdb {
                     System.out.printf("< %d =>%s\n", key, value);
                 }
             } else if (instruct.equals("exit")) {
+                btfile.close();
                 System.exit(0);
             } else {
                 in.nextLine();
