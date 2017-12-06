@@ -58,13 +58,13 @@ public class btdb {
                 else {
                     String value = btFile.readKeyValue(key);
                     // print confirmation
-                    System.out.printf("< %d =>%s\n", key, value);
+                    System.out.printf("< %d => %s\n", key, value);
                 }
             } else if (instruct.equals("exit")) {
-                btFile.close();
+            	btFile.close();
                 System.exit(0);
             } else {
-                in.nextLine();
+            	in.nextLine();
                 System.out.println("< ERROR: invalid command.");
             }
             System.out.print("> ");
