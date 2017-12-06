@@ -1,4 +1,3 @@
-
 import java.io.*;
 
 public class BTRecords {
@@ -30,6 +29,7 @@ public class BTRecords {
             this.btfile.seek(RECORD_COUNT_OFFSET);
             this.countRecords = this.btfile.readLong(); 
             this.rootLocation = this.btfile.readLong();
+            this.countRecords = atree.record;
         }
     }
     
@@ -38,7 +38,7 @@ public class BTRecords {
         // BTree add
         atree.insert(atree.root, key, valFile.countRecords);
         rootLocation = atree.root.record;
-        countRecords = atree.record + 1;
+        countRecords = atree.record;
         // valFile add
         valFile.access(valFile.countRecords);
         valFile.write(value);
@@ -48,9 +48,11 @@ public class BTRecords {
     }
     
     public void btUpdate() throws IOException{
-    	placeKeysAndOffset(atree.root.record, atree.takeKeys(atree.root), atree.takeOffset(atree.root));
-    	placeChildren(atree.root.record, atree.takeChildren(atree.root));
-    	
+    	for (int i = 0; i < countRecords; i++) {
+    		placeParent(i, atree.findNode(atree.root,i).parent.record);
+    		placeKeysAndOffset(i, atree.takeKeys(atree.findNode(atree.root,i)), atree.takeOffset(atree.findNode(atree.root,i)));
+    		placeChildren(atree.root.record, atree.takeChildren(atree.findNode(atree.root,i)));
+    	}
     }
     
     public boolean keyExist(long key) throws IOException{
@@ -105,6 +107,11 @@ public class BTRecords {
         }
     }
     
+    public void placeParent(long record, long parentRecord) throws IOException {
+    	btfile.seek(16 + (record * 8 * entries));
+    	btfile.writeLong(parentRecord);
+    	}
+    
     // extracts all keys from btfile and returns an array
     public long[] extractKeys(int record) throws IOException{
         long[] nodeKeys = new long[entries];
@@ -125,34 +132,10 @@ public class BTRecords {
         }
     }
     
-    // places children in the indicated record
     public void placeChildren(int record, long[] children) throws IOException {
     	 for(int i = 0; i < order; i++) {
     		 btfile.seek((16 + (record * 8 * entries)) + (8 + (8 * 3 * i)));
     		 btfile.writeLong(children[i]);
     		 }
     	 }
-    
-    public long getNumRecords() throws IOException{
-        btfile.seek(0);
-        return btfile.readLong();
-    }
-    
-    // returns the location of the root
-    public long rootLocation() throws IOException {
-        btfile.seek(8);
-        return btfile.readLong();
-    }
-    
-    // places the parent record number into the record for the indicated node
-    public void placeParent(long record, long parentRecord) throws IOException {
-        btfile.seek(16 + (record * 8 * entries));
-        btfile.writeLong(parentRecord);
-    }
-    
-    // extracts parent record number from the record
-    public long getParent(long record) throws IOException {
-        btfile.seek(16 + (record * 8 * entries));
-        return btfile.readLong();
-    }
 }
