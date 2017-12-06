@@ -54,7 +54,7 @@ public class ValuesRecords {
         return message;
     }
     
-    public void close(){
+    public void close() throws IOException{
         valfile.close();
     }
 }
