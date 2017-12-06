@@ -181,6 +181,20 @@ public class Btree {
 		return key;
 	}
 	
+	public Node findNode(Node n, int record) {
+		if (n.record == record) {
+			return n;
+		}
+		for (int i = 0; i < order; i++) {
+			if(n.child[i] != null) {
+				Node l = findNode(n.child[i], record);
+				if (l != null) 
+					return l;
+			}
+		}
+		return null;
+	}
+	
 	public void rootAdder(Long[][] key, int record) {
 		Node n = new Node(order,record);
 		n.key = key;
