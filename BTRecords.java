@@ -164,4 +164,8 @@ public class BTRecords {
     		}
     	}
     }
+	public void close(){
+		valFile.close();
+		btfile.close();
+	}
 }
