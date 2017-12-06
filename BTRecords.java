@@ -59,6 +59,8 @@ public class BTRecords {
     		placeKeysAndOffset(i, atree.takeKeys(atree.findNode(atree.root,i)), atree.takeOffset(atree.findNode(atree.root,i)));
     		placeChildren(i, atree.takeChildren(atree.findNode(atree.root,i)));
     	}
+    	updateRootLocation(rootLocation);
+    	updateCountRecord(countRecords);
     }
     
     public boolean keyExist(long key) throws IOException{
@@ -165,17 +167,16 @@ public class BTRecords {
     		}
     	}
     }
-	
     public void updateRootLocation(long record) throws IOException{
 	    btfile.seek(8);
 	    btfile.writeLong(record);
     }
 	
-public void updateCountRecord(long record) throws IOException {
-	btfile.seek(0);
-	btfile.writeLong(record);
+    public void updateCountRecord(long record) throws IOException {
+    	btfile.seek(0);
+    	btfile.writeLong(record);
 	}
-	
+
     public void close() throws IOException{
     	valFile.close();
     	btfile.close();
