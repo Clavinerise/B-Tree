@@ -5,9 +5,9 @@ public class ValuesRecords {
     RandomAccessFile valfile;
     long countRecords;
     int RECORD_COUNT_OFFSET = 0;
-    int length = 2;
-    int valueStr = 256;
-    int valSize = length + valueStr;
+    int length = 2; //in bytes
+    int valueStr = 256; //in bytes
+    int valSize = length + valueStr; //in bytes
     
     public ValuesRecords(String strFile) throws IOException {
         File file = new File(strFile);
@@ -52,7 +52,8 @@ public class ValuesRecords {
         String message = new String(bArr, "UTF-8");
         return message;
     }
+    
     public void close() throws IOException{
     	valfile.close();
-    	}
+    }
 }
