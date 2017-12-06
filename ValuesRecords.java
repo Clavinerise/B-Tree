@@ -53,4 +53,8 @@ public class ValuesRecords {
         String message = new String(bArr, "UTF-8");
         return message;
     }
+    
+    public void close(){
+        valfile.close();
+    }
 }
