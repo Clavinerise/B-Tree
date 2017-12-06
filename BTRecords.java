@@ -150,12 +150,12 @@ public class BTRecords {
     	long parent = entry[0];
     	long[] children = new long[order];
     	for (int j = 0; j < order; j++) {
-    		entry[1+(3*j)] = children[j];
+    		children[j] = entry[1+(3*j)];
     	}
     	Long[][] keys = new Long[order][2];
-    	for (int j = 0; j < order-1;j++) {
-    		entry[2+(3*j)] = keys[j][0];
-    		entry[3+(3*j)] = keys[j][1];
+    	for (int j = 0; j < order-1; j++) {
+    		keys[j][0] = entry[2+(3*j)];
+			keys[j][1] = entry[3+(3*j)] ;
     	}
     	atree.nodeAdder(keys, (int)record, parent);
     	for(int i = 0; i < order; i++) {
