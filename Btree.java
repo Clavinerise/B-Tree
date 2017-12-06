@@ -205,6 +205,7 @@ public class Btree {
 		}
 		else {
 			n.parent = findNode(root, (int)parent);
+			n.parent.specReset();
 			n.parent.addChild(n);
 		}
 		
@@ -303,6 +304,10 @@ public class Btree {
 		public void reset() {
 			childPointer = minKeys+1;
 			keyPointer = minKeys;
+		}
+		
+		public void specReset() {
+			childPointer = 0;
 		}
 	}
 }
