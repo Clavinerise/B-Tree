@@ -108,7 +108,7 @@ public class BTRecords {
     // extracts all keys from btfile and returns an array
     public long[] extractKeys(int record) throws IOException{
         long[] nodeKeys = new long[entries];
-        for(int i = 0; i < entries - 1; i++) {
+        for(int i = 0; i < entries; i++) {
             btfile.seek(16 + (record * 8 * entries));
             long r = btfile.readLong();
             nodeKeys[i] = r;
