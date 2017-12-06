@@ -164,7 +164,7 @@ public class BTRecords {
     		}
     	}
     }
-	public void close(){
+	public void close() throws IOException{
 		valFile.close();
 		btfile.close();
 	}
