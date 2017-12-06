@@ -165,7 +165,17 @@ public class BTRecords {
     		}
     	}
     }
-    
+	
+    public void updateRootLocation(long record) throws IOException{
+	    btfile.seek(8);
+	    btfile.writeLong(record);
+    }
+	
+public void updateCountRecord(long record) throws IOException {
+	btfile.seek(0);
+	btfile.writeLong(record);
+	}
+	
     public void close() throws IOException{
     	valFile.close();
     	btfile.close();
