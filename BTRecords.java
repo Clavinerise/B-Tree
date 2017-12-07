@@ -29,6 +29,7 @@ public class BTRecords {
             this.btfile.seek(RECORD_COUNT_OFFSET);
             this.countRecords = this.btfile.readLong(); 
             this.rootLocation = this.btfile.readLong();
+            atree.isReading();
             wBtree(rootLocation);
         }
     }
@@ -49,7 +50,7 @@ public class BTRecords {
     
     public void btUpdate() throws IOException{
     	for (int i = 0; i < countRecords; i++) {
-    		if(atree.findNode(atree.root,i).parent==null) {
+    		if(atree.findNode(atree.root,i).parent == null) {
     			placeParent(i,-1);
     		}
     		else {
