@@ -196,6 +196,9 @@ public class Btree {
 		return null;
 	}
 	
+	public void isReading() {
+		record = 0;
+	}
 	
 	public void nodeAdder(Long[][] key, int record, long parent) {
 		Node n = new Node(order,record);
@@ -240,6 +243,7 @@ public class Btree {
 			key = new Long[numKeys+1][2];
 			child = new Node[numChild+1];
 			record = y;
+			parent = null;
 		}
 		
 		//check if the node is full/overloaded
